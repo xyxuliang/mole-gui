@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff9500"/>
+      <stop offset="100%" stop-color="#ff6b00"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <circle cx="64" cy="64" r="56" fill="url(#bg)"/>
+  
+  <!-- 齿轮（背景装饰） -->
+  <g transform="translate(92, 36)" opacity="0.3">
+    <circle cx="0" cy="0" r="14" fill="none" stroke="#fff" stroke-width="3"/>
+    <circle cx="0" cy="0" r="5" fill="#fff"/>
+    <line x1="0" y1="-17" x2="0" y2="-21" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="0" y1="17" x2="0" y2="21" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-17" y1="0" x2="-21" y2="0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="17" y1="0" x2="21" y2="0" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-12" y1="-12" x2="-15" y2="-15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="12" y1="12" x2="15" y2="15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-12" y1="12" x2="-15" y2="15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <line x1="12" y1="-12" x2="15" y2="-15" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- 鼹鼠脸部 -->
+  <ellipse cx="58" cy="72" rx="30" ry="26" fill="#ffffff"/>
+  
+  <!-- 耳朵 -->
+  <ellipse cx="36" cy="52" rx="10" ry="8" fill="#ffffff" transform="rotate(-20, 36, 52)"/>
+  <ellipse cx="80" cy="52" rx="10" ry="8" fill="#ffffff" transform="rotate(20, 80, 52)"/>
+  
+  <!-- 鼻子（鼹鼠标志性大鼻子） -->
+  <ellipse cx="58" cy="80" rx="10" ry="8" fill="#ff9500"/>
+  
+  <!-- 眼睛（小而圆，鼹鼠视力弱） -->
+  <circle cx="46" cy="66" r="4.5" fill="#333333"/>
+  <circle cx="70" cy="66" r="4.5" fill="#333333"/>
+  
+  <!-- 眼睛高光 -->
+  <circle cx="44.5" cy="64.5" r="1.5" fill="#ffffff"/>
+  <circle cx="68.5" cy="64.5" r="1.5" fill="#ffffff"/>
+  
+  <!-- 嘴巴（微笑） -->
+  <path d="M52 86 Q58 92 64 86" fill="none" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- 胡须 -->
+  <line x1="30" y1="76" x2="46" y2="78" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="28" y1="82" x2="46" y2="82" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="30" y1="88" x2="46" y2="86" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="86" y1="76" x2="70" y2="78" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="88" y1="82" x2="70" y2="82" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="86" y1="88" x2="70" y2="86" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
