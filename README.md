@@ -1,8 +1,8 @@
-# Mole GUI
+# Mole Desktop
 
 基于 [Tauri](https://tauri.app/) 开发的 Mac 系统优化工具，封装 [Mole CLI](https://github.com/tw93/mole) 提供图形界面。
 
-![Mole GUI](image/home.jpg)
+![Mole Desktop](image/home.jpg)
 
 ## 功能
 
@@ -15,9 +15,10 @@
 - **项目清理** - 清理项目构建产物
 - **安装包清理** - 查找并移除安装包文件
 - **Touch ID** - 配置 Touch ID 用于 sudo
+- **Shell 补全** - 设置 Shell 自动补全
+- **环境变量** - 查看、新增、编辑、删除环境变量，支持持久化到 shell 配置文件
 - **应用更新** - 更新 Mole 到最新版本
 - **应用移除** - 从系统中移除 Mole
-- **Shell 补全** - 设置 Shell 自动补全
 
 ## 技术栈
 
@@ -38,34 +39,46 @@ npm run tauri dev
 npm run tauri build
 ```
 
+构建产物位于 `src-tauri/target/release/bundle/`。
+
 ## 项目结构
 
 ```
 mole-gui/
-├── image/
-│   └── home.jpg          # 应用截图
-├── src/
-│   ├── index.html        # 主页面（侧边栏导航布局）
-│   ├── main.js           # 前端逻辑（流式输出 + 事件监听）
-│   └── styles.css        # 样式文件（支持亮色/暗色主题）
-── src-tauri/
-│   ├── resources/        # 内置 Mole CLI
+├── image/                      # 应用截图
+├── src/                        # 前端资源
+│   ├── index.html              # 主页面（侧边栏导航布局）
+│   ├── main.js                 # 前端逻辑（流式输出 + 事件监听）
+│   └── styles.css              # 样式文件（支持亮色/暗色主题）
+├── src-tauri/                  # Rust 后端
+│   ├── resources/bin/          # 内置 Mole CLI（构建时动态复制）
 │   ├── src/
-│   │   ├── main.rs       # 入口
-│   │   └── lib.rs        # Rust 后端（Mole CLI 封装）
+│   │   ├── main.rs             # 入口
+│   │   ├── lib.rs              # Rust 后端（Mole CLI 封装）
+│   │   └── build.rs            # 构建脚本（复制 Mole CLI）
 │   ├── Cargo.toml
 │   └── tauri.conf.json
-└── package.json
+├── .github/workflows/          # GitHub Actions 自动构建
+├── package.json
+└── CLAUDE.md                   # 项目详细文档
 ```
+
+## 自动构建
+
+项目配置了 GitHub Actions 工作流，支持自动构建和发布：
+
+- **推送标签**（如 `v0.1.0`）时自动构建并发布到 GitHub Release
+- **手动触发**时可选择是否创建 Release，安装包按 CPU 平台命名（如 `-aarch64`）
 
 ## 特性
 
 - **内置 Mole** - 应用自带 Mole CLI，无需用户额外安装
+- **按钮加载状态** - 操作时按钮显示 spinner 和加载文字
+- **自定义对话框** - 原生风格的输入框和确认对话框
 - **流式输出** - 实时显示命令执行进度，避免 UI 卡住
 - **双主题** - 支持亮色和暗色主题切换
 - **并发读取** - 使用双线程同时读取 stdout/stderr，避免死锁
-- **ANSI 清理** - 自动移除终端颜色转义序列
-- **结构化列表** - 将 CLI 输出解析为分组列表展示
+- **环境变量持久化** - 支持写入 .zshrc / .bash_profile / .bashrc
 
 ## 关于 Mole CLI
 
@@ -80,23 +93,8 @@ mole-gui/
 
 **Mole 许可证：** [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html)
 
-根据 GPL v3 许可证要求，本项目作为 Mole 的衍生作品，同样采用 GPL v3 许可证。
-
 ## 许可证
 
 本项目采用 [GPL v3](https://www.gnu.org/licenses/gpl-3.0.html) 许可证。
 
 Copyright (c) 2024
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
