@@ -105,13 +105,22 @@ jobs:
           path: src-tauri/target/release/bundle/macos/*.app
           retention-days: 30
 
-      # 12. 创建 GitHub Release（推送标签或手动触发时）
+      # 12. 获取版本号
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(grep '^version = ' src-tauri/Cargo.toml | sed 's/version = "\(.*\)"/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+
+      # 13. 创建 GitHub Release（推送标签或手动触发时）
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.release == 'true'
         uses: softprops/action-gh-release@v2
         with:
-          name: Mole Desktop ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Dev Build' }}
-          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-{0}', github.sha) }}
+          name: Mole Desktop v${{ steps.version.outputs.version }}${{ !startsWith(github.ref, 'refs/tags/') && format(' ({0})', steps.version.outputs.short_sha) || '' }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}-dev-{1}', steps.version.outputs.version, steps.version.outputs.short_sha) }}
           files: |
             src-tauri/target/release/bundle/dmg/*.dmg
           draft: false
