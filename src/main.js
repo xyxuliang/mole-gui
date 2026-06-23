@@ -127,33 +127,60 @@ const features = {
 // 当前选中的功能
 let currentFeature = 'clean';
 
-// 显示加载状态
-function showLoading(feature) {
-  const panel = document.querySelector(`#panel-${feature}`);
-  const placeholder = document.querySelector(`#${feature}-placeholder`);
-  const loading = document.querySelector(`#${feature}-loading`);
-  const result = document.querySelector(`#${feature}-result`);
+// 按钮加载状态管理
+const buttonLoadingStates = new Map();
 
-  // 激活结果面板
-  if (panel && !panel.classList.contains('active')) {
-    panel.classList.add('active');
-  }
-
-  if (placeholder) placeholder.style.display = 'none';
+// 设置按钮加载状态
+function setButtonLoading(buttonId, loading, loadingText = '处理中...') {
+  const btn = document.querySelector(buttonId);
+  if (!btn) return;
+  
   if (loading) {
-    loading.style.display = 'flex';
-    // 强制重绘
-    void loading.offsetHeight;
-  }
-  if (result) {
-    result.style.display = 'none';
+    // 保存原始内容
+    if (!buttonLoadingStates.has(buttonId)) {
+      buttonLoadingStates.set(buttonId, {
+        html: btn.innerHTML,
+        disabled: btn.disabled
+      });
+    }
+    
+    // 设置加载状态
+    btn.disabled = true;
+    btn.classList.add('btn-loading');
+    btn.innerHTML = `
+      <span class="btn-spinner"></span>
+      <span>${loadingText}</span>
+    `;
+  } else {
+    // 恢复原始状态
+    const original = buttonLoadingStates.get(buttonId);
+    if (original) {
+      btn.innerHTML = original.html;
+      btn.disabled = original.disabled;
+      buttonLoadingStates.delete(buttonId);
+    }
+    btn.classList.remove('btn-loading');
   }
 }
 
-// 隐藏加载状态
-function hideLoading(feature) {
-  const loading = document.querySelector(`#${feature}-loading`);
-  if (loading) loading.style.display = 'none';
+// 获取功能对应的主按钮 ID
+function getFeatureButtonId(feature) {
+  const buttonMap = {
+    clean: '#btn-scan',
+    uninstall: '#btn-scan-apps',
+    analyze: '#btn-analyze',
+    status: '#btn-status',
+    optimize: '#btn-optimize-scan',
+    history: '#btn-history',
+    purge: '#btn-purge',
+    installer: '#btn-installer',
+    touchid: '#btn-touchid',
+    update: '#btn-update',
+    remove: '#btn-remove',
+    completion: '#btn-completion',
+    envs: '#btn-envs-refresh'
+  };
+  return buttonMap[feature];
 }
 
 // 显示结果状态
@@ -715,9 +742,25 @@ function switchFeature(feature) {
 async function executeWithStreaming(feature, commandFn) {
   const config = features[feature];
   const eventName = config.event;
+  const buttonId = getFeatureButtonId(feature);
   
-  // 显示加载状态
-  showLoading(feature);
+  // 设置按钮加载状态
+  const loadingText = config.title ? `正在${config.title}...` : '处理中...';
+  setButtonLoading(buttonId, true, loadingText);
+  
+  // 激活结果面板并显示实时输出
+  const panel = document.querySelector(`#panel-${feature}`);
+  const placeholder = document.querySelector(`#${feature}-placeholder`);
+  const result = document.querySelector(`#${feature}-result`);
+  
+  if (panel && !panel.classList.contains('active')) {
+    panel.classList.add('active');
+  }
+  if (placeholder) placeholder.style.display = 'none';
+  if (result) {
+    result.style.display = 'block';
+    result.innerHTML = '<div class="realtime-output"></div>';
+  }
   
   let unlisten = null;
   let fullOutput = '';
@@ -731,7 +774,7 @@ async function executeWithStreaming(feature, commandFn) {
         // 累积输出内容
         fullOutput += data;
         
-        // 实时更新显示 - 保持加载动画，在下方显示实时输出
+        // 实时更新显示
         const result = document.querySelector(`#${feature}-result`);
         if (result) {
           result.style.display = 'block';
@@ -740,10 +783,6 @@ async function executeWithStreaming(feature, commandFn) {
           result.scrollTop = result.scrollHeight;
         }
       } else if (event_type === 'done') {
-        // 命令执行完成，隐藏加载动画，渲染结构化列表
-        const loading = document.querySelector(`#${feature}-loading`);
-        if (loading) loading.style.display = 'none';
-        
         // 更新统计卡片（如果是清理功能）
         if (feature === 'clean') {
           updateCleanStats(fullOutput);
@@ -771,6 +810,8 @@ async function executeWithStreaming(feature, commandFn) {
     if (unlisten) {
       unlisten();
     }
+    // 恢复按钮状态
+    setButtonLoading(buttonId, false);
   }
 }
 
@@ -1051,6 +1092,94 @@ async function init() {
     await executeWithStreaming('completion', () => invoke('completion'));
   });
 
+  // 自定义 prompt 对话框（替代浏览器原生 prompt）
+  function showPrompt(title, defaultValue = '') {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-dialog';
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h3>${escapeHtml(title)}</h3>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="modal-input" value="${escapeHtml(defaultValue)}" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary modal-cancel">取消</button>
+          <button class="btn btn-primary modal-confirm">确定</button>
+        </div>
+      `;
+      
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+      
+      const input = modal.querySelector('.modal-input');
+      const cancelBtn = modal.querySelector('.modal-cancel');
+      const confirmBtn = modal.querySelector('.modal-confirm');
+      
+      input.focus();
+      input.select();
+      
+      const close = (value) => {
+        overlay.remove();
+        resolve(value);
+      };
+      
+      cancelBtn.addEventListener('click', () => close(null));
+      confirmBtn.addEventListener('click', () => close(input.value));
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') close(input.value);
+        if (e.key === 'Escape') close(null);
+      });
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close(null);
+      });
+    });
+  }
+
+  // 自定义 confirm 对话框
+  function showConfirm(title, message) {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      
+      const modal = document.createElement('div');
+      modal.className = 'modal-dialog';
+      modal.innerHTML = `
+        <div class="modal-header">
+          <h3>${escapeHtml(title)}</h3>
+        </div>
+        <div class="modal-body">
+          <p>${escapeHtml(message)}</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary modal-cancel">取消</button>
+          <button class="btn btn-danger modal-confirm">确定</button>
+        </div>
+      `;
+      
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+      
+      const cancelBtn = modal.querySelector('.modal-cancel');
+      const confirmBtn = modal.querySelector('.modal-confirm');
+      
+      const close = (value) => {
+        overlay.remove();
+        resolve(value);
+      };
+      
+      cancelBtn.addEventListener('click', () => close(false));
+      confirmBtn.addEventListener('click', () => close(true));
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close(false);
+      });
+    });
+  }
+
   // 环境变量管理
   let allEnvs = []; // 存储所有环境变量
 
@@ -1104,7 +1233,7 @@ async function init() {
         const name = e.currentTarget.dataset.name;
         const oldValue = e.currentTarget.dataset.value;
         const source = e.currentTarget.dataset.source;
-        const newValue = prompt('编辑环境变量 ' + name, oldValue);
+        const newValue = await showPrompt('编辑环境变量 ' + name, oldValue);
         if (newValue !== null && newValue !== oldValue) {
           try {
             if (source) {
@@ -1128,7 +1257,8 @@ async function init() {
       btn.addEventListener('click', async (e) => {
         const name = e.currentTarget.dataset.name;
         const source = e.currentTarget.dataset.source;
-        if (confirm('确定要删除环境变量 ' + name + ' 吗？')) {
+        const confirmed = await showConfirm('确认删除', '确定要删除环境变量 ' + name + ' 吗？');
+        if (confirmed) {
           try {
             if (source) {
               // 从 shell 配置文件中删除
@@ -1149,16 +1279,16 @@ async function init() {
 
   // 加载环境变量
   async function loadEnvs() {
-    showLoading('envs');
+    setButtonLoading('#btn-envs-refresh', true, '正在加载...');
     try {
       // 加载 shell 配置文件中的环境变量
       const shellEnvs = await invoke('list_shell_envs');
       allEnvs = shellEnvs;
-      hideLoading('envs');
       renderEnvs(allEnvs);
     } catch (err) {
-      hideLoading('envs');
       toast('加载失败: ' + err, 'error');
+    } finally {
+      setButtonLoading('#btn-envs-refresh', false);
     }
   }
 
@@ -1183,13 +1313,13 @@ async function init() {
 
   // 绑定新增按钮
   document.querySelector('#btn-envs-add').addEventListener('click', async () => {
-    const name = prompt('请输入变量名:');
+    const name = await showPrompt('请输入变量名:');
     if (!name) return;
-    const value = prompt('请输入变量值:');
+    const value = await showPrompt('请输入变量值:');
     if (value === null) return;
 
     // 选择要写入的配置文件
-    const source = prompt('选择配置文件 (.zshrc / .bash_profile / .bashrc):', '.zshrc');
+    const source = await showPrompt('选择配置文件 (.zshrc / .bash_profile / .bashrc):', '.zshrc');
     if (!source) return;
 
     try {
