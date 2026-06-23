@@ -745,7 +745,7 @@ async function executeWithStreaming(feature, commandFn) {
   const buttonId = getFeatureButtonId(feature);
   
   // 设置按钮加载状态
-  const loadingText = config.title ? `正在${config.title}...` : '处理中...';
+  const loadingText = '扫描中...';
   setButtonLoading(buttonId, true, loadingText);
   
   // 激活结果面板并显示实时输出

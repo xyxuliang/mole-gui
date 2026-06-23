@@ -148,6 +148,33 @@ npm run tauri build
 
 构建产物位于 `src-tauri/target/release/bundle/`。
 
+### GitHub Actions 自动构建
+
+项目配置了 GitHub Actions 工作流，支持自动构建和发布：
+
+**触发条件：**
+- 推送标签时（如 `v0.1.0`）自动构建并发布
+- 手动触发（workflow_dispatch）
+
+**手动触发构建：**
+1. 进入 GitHub 仓库的 Actions 页面
+2. 选择 "Build" 工作流
+3. 点击 "Run workflow" 按钮
+
+**推送标签发布：**
+```bash
+# 创建标签
+git tag v0.1.0
+
+# 推送标签
+git push origin v0.1.0
+```
+
+**构建产物：**
+- DMG 安装包（保留 30 天）
+- APP 应用包（保留 30 天）
+- GitHub Release（仅标签触发时）
+
 ### 代码结构说明
 
 **Rust 后端 (`src-tauri/src/lib.rs`)**:

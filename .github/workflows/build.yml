@@ -1,0 +1,98 @@
+# Mole Desktop 自动构建工作流
+name: Build
+
+on:
+  # 推送标签时触发构建
+  push:
+    tags:
+      - 'v*'
+  # 手动触发
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Mole Desktop
+    runs-on: macos-latest
+    
+    steps:
+      # 1. 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 安装 Rust
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      # 3. 安装 Node.js
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 4. 安装前端依赖
+      - name: Install frontend dependencies
+        run: npm ci
+
+      # 5. 安装 Tauri CLI
+      - name: Install Tauri CLI
+        run: npm install -g @tauri-apps/cli
+
+      # 6. 缓存 Rust 依赖
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            src-tauri/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      # 7. 下载 Mole CLI
+      - name: Download Mole CLI
+        run: |
+          mkdir -p src-tauri/resources/bin
+          # 从 Homebrew 安装 mole
+          brew install tw93/tap/mole
+          # 复制到 resources 目录
+          cp /opt/homebrew/bin/mo src-tauri/resources/bin/mole-aarch64-apple-darwin
+          chmod +x src-tauri/resources/bin/mole-aarch64-apple-darwin
+
+      # 8. 构建应用
+      - name: Build Tauri app
+        run: npm run tauri build
+
+      # 9. 上传 DMG 安装包
+      - name: Upload DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mole-Desktop-DMG
+          path: src-tauri/target/release/bundle/dmg/*.dmg
+          retention-days: 30
+
+      # 10. 上传 APP 压缩包
+      - name: Upload APP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mole-Desktop-APP
+          path: src-tauri/target/release/bundle/macos/*.app
+          retention-days: 30
+
+      # 11. 创建 GitHub Release（仅当推送标签时）
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            src-tauri/target/release/bundle/dmg/*.dmg
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
