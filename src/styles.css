@@ -1655,3 +1655,201 @@ body {
   border-color: var(--accent);
   background: var(--bg-card);
 }
+
+/* ========== 设置页面 ========== */
+.settings-container {
+  padding: 24px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+}
+
+.settings-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-medium);
+}
+
+.settings-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.settings-item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settings-item-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.settings-item-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-select {
+  padding: 8px 32px 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0a0a0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.settings-select:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.settings-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.theme-switcher {
+  display: flex;
+  gap: 8px;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.theme-option:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.theme-option.active {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.theme-option svg {
+  width: 18px;
+  height: 18px;
+}
+
+.settings-badge {
+  padding: 4px 12px;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 亮色主题下的设置页面 */
+[data-theme="light"] .settings-container {
+  background: var(--bg-card);
+  border-color: var(--border-light);
+}
+
+[data-theme="light"] .settings-item {
+  background: var(--bg-tertiary);
+  border-color: var(--border-light);
+}
+
+[data-theme="light"] .settings-item:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-medium);
+}
+
+[data-theme="light"] .settings-select {
+  background: var(--bg-card);
+  border-color: var(--border-medium);
+}
+
+[data-theme="light"] .settings-select:hover {
+  background: var(--bg-hover);
+}
+
+[data-theme="light"] .theme-option {
+  background: var(--bg-card);
+  border-color: var(--border-medium);
+}
+
+[data-theme="light"] .theme-option:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-strong);
+}
+
+/* 侧边栏导航分组 */
+.nav-group {
+  margin-bottom: 16px;
+}
+
+.nav-group-title {
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ========== 响应式调整 ========== */
+@media (max-width: 768px) {
+  .settings-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .settings-item-control {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .theme-switcher {
+    width: 100%;
+  }
+  
+  .theme-option {
+    flex: 1;
+    justify-content: center;
+  }
+}
