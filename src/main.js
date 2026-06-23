@@ -122,6 +122,15 @@ const features = {
     </svg>`,
     event: 'envs-output',
   },
+  settings: {
+    title: '设置',
+    subtitle: '应用设置和偏好',
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+    </svg>`,
+    event: '',
+  },
 };
 
 // 当前选中的功能
@@ -914,12 +923,40 @@ function updateThemeIcon(theme) {
   }
 }
 
+// 更新设置页面的主题选择器
+function updateThemeSelector(theme) {
+  const themeButtons = document.querySelectorAll('.theme-option');
+  themeButtons.forEach(btn => {
+    const btnTheme = btn.getAttribute('data-theme');
+    if (btnTheme === theme) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
 // 初始化
 async function init() {
+  // 初始化国际化系统
+  if (window.i18n) {
+    window.i18n.loadLanguage();
+    window.i18n.updateUI();
+    
+    // 更新设置页面的语言选择器
+    const langSelect = document.querySelector('#settings-language');
+    if (langSelect) {
+      langSelect.value = window.i18n.currentLang;
+    }
+  }
+  
   // 初始化主题
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
+  
+  // 更新设置页面的主题选择器
+  updateThemeSelector(savedTheme);
   
   // 绑定主题切换按钮
   document.querySelector('#theme-toggle').addEventListener('click', () => {
@@ -928,12 +965,39 @@ async function init() {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
+    updateThemeSelector(newTheme);
+  });
+  
+  // 绑定设置页面的语言切换
+  const langSelect = document.querySelector('#settings-language');
+  if (langSelect) {
+    langSelect.addEventListener('change', (e) => {
+      const newLang = e.target.value;
+      if (window.i18n) {
+        window.i18n.setLanguage(newLang);
+        // 更新当前页面的标题和描述
+        const config = features[currentFeature];
+        document.querySelector('#hero-title').textContent = config.title;
+        document.querySelector('#hero-subtitle').textContent = config.subtitle;
+      }
+    });
+  }
+  
+  // 绑定设置页面的主题切换按钮
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const newTheme = btn.dataset.themeValue;
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+      updateThemeSelector(newTheme);
+    });
   });
   
   // 检查 Mole 是否安装
   const installed = await invoke('is_installed');
   if (!installed) {
-    document.querySelector('#version-info').textContent = 'Mole 未安装';
+    document.querySelector('#version-info').textContent = window.i18n ? window.i18n.t('moleNotInstalled') : 'Mole 未安装';
     return;
   }
   
@@ -943,11 +1007,14 @@ async function init() {
     if (result.is_success) {
       const lines = result.stdout.trim().split('\n');
       document.querySelector('#version-info').textContent = lines[0] || 'Mole';
+      document.querySelector('#settings-version').textContent = lines[0] || '1.0.0';
     } else {
       document.querySelector('#version-info').textContent = 'Mole';
+      document.querySelector('#settings-version').textContent = '1.0.0';
     }
   } catch (e) {
     document.querySelector('#version-info').textContent = 'Mole';
+    document.querySelector('#settings-version').textContent = '1.0.0';
   }
   
   // 初始化头部图标

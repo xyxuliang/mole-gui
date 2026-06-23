@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mole Desktop</title>
+    <script type="module" src="/i18n.js" defer></script>
     <script type="module" src="/main.js" defer></script>
   </head>
 
@@ -46,104 +47,125 @@
         </div>
 
         <nav class="nav-menu">
-          <button class="nav-item active" data-feature="clean">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 6h18M3 12h18M3 18h18"/>
-            </svg>
-            <span>系统清理</span>
-          </button>
-          <button class="nav-item" data-feature="uninstall">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-            </svg>
-            <span>应用卸载</span>
-          </button>
-          <button class="nav-item" data-feature="analyze">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 01-.437-.437C3 20.24 3 19.96 3 19.4V3m4 14l4-4 4 4 6-6"/>
-            </svg>
-            <span>磁盘分析</span>
-          </button>
-          <button class="nav-item" data-feature="status">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-            </svg>
-            <span>系统状态</span>
-          </button>
-          <button class="nav-item" data-feature="optimize">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-            </svg>
-            <span>系统优化</span>
-          </button>
-          <button class="nav-item" data-feature="history">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span>操作历史</span>
-          </button>
-          <button class="nav-item" data-feature="purge">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/>
-              <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
-            </svg>
-            <span>项目清理</span>
-          </button>
-          <button class="nav-item" data-feature="installer">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            <span>安装包清理</span>
-          </button>
-          <button class="nav-item" data-feature="touchid">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M2 12h20M12 2v20"/>
-              <circle cx="12" cy="12" r="10"/>
-            </svg>
-            <span>Touch ID</span>
-          </button>
-          <button class="nav-item" data-feature="update">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="23 4 23 10 17 10"/>
-              <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
-            </svg>
-            <span>应用更新</span>
-          </button>
-          <button class="nav-item" data-feature="remove">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="15" y1="9" x2="9" y2="15"/>
-              <line x1="9" y1="9" x2="15" y2="15"/>
-            </svg>
-            <span>应用移除</span>
-          </button>
-          <button class="nav-item" data-feature="completion">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="4 17 10 11 4 5"/>
-              <line x1="12" y1="19" x2="20" y2="19"/>
-            </svg>
-            <span>Shell 补全</span>
-          </button>
-          <button class="nav-item" data-feature="envs">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 6h16M4 12h16M4 18h16"/>
-              <circle cx="8" cy="6" r="1" fill="currentColor"/>
-              <circle cx="8" cy="12" r="1" fill="currentColor"/>
-              <circle cx="8" cy="18" r="1" fill="currentColor"/>
-            </svg>
-            <span>环境变量</span>
-          </button>
+          <!-- 系统工具分组 -->
+          <div class="nav-group">
+            <div class="nav-group-title" data-i18n="groupSystem">系统工具</div>
+            <button class="nav-item active" data-feature="clean">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M3 12h18M3 18h18"/>
+              </svg>
+              <span data-i18n="clean">系统清理</span>
+            </button>
+            <button class="nav-item" data-feature="uninstall">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+              </svg>
+              <span data-i18n="uninstall">应用卸载</span>
+            </button>
+            <button class="nav-item" data-feature="analyze">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 01-.437-.437C3 20.24 3 19.96 3 19.4V3m4 14l4-4 4 4 6-6"/>
+              </svg>
+              <span data-i18n="analyze">磁盘分析</span>
+            </button>
+            <button class="nav-item" data-feature="status">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <span data-i18n="status">系统状态</span>
+            </button>
+            <button class="nav-item" data-feature="optimize">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+              <span data-i18n="optimize">系统优化</span>
+            </button>
+          </div>
+
+          <!-- 维护管理分组 -->
+          <div class="nav-group">
+            <div class="nav-group-title" data-i18n="groupMaintenance">维护管理</div>
+            <button class="nav-item" data-feature="history">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span data-i18n="history">操作历史</span>
+            </button>
+            <button class="nav-item" data-feature="purge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/>
+                <path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+              </svg>
+              <span data-i18n="purge">项目清理</span>
+            </button>
+            <button class="nav-item" data-feature="installer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span data-i18n="installer">安装包清理</span>
+            </button>
+            <button class="nav-item" data-feature="touchid">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12h20M12 2v20"/>
+                <circle cx="12" cy="12" r="10"/>
+              </svg>
+              <span>Touch ID</span>
+            </button>
+            <button class="nav-item" data-feature="envs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 6h16M4 12h16M4 18h16"/>
+                <circle cx="8" cy="6" r="1" fill="currentColor"/>
+                <circle cx="8" cy="12" r="1" fill="currentColor"/>
+                <circle cx="8" cy="18" r="1" fill="currentColor"/>
+              </svg>
+              <span data-i18n="envs">环境变量</span>
+            </button>
+            <button class="nav-item" data-feature="completion">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"/>
+                <line x1="12" y1="19" x2="20" y2="19"/>
+              </svg>
+              <span data-i18n="completion">Shell 补全</span>
+            </button>
+            <button class="nav-item" data-feature="update">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+              </svg>
+              <span data-i18n="update">应用更新</span>
+            </button>
+            <button class="nav-item" data-feature="remove">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+              <span data-i18n="remove">应用移除</span>
+            </button>
+          </div>
+
+          <!-- 设置分组 -->
+          <div class="nav-group">
+            <div class="nav-group-title" data-i18n="groupSettings">设置</div>
+            <button class="nav-item" data-feature="settings">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+              <span data-i18n="settings">设置</span>
+            </button>
+          </div>
         </nav>
 
         <div class="sidebar-footer">
           <div class="status-indicator">
             <div class="status-dot"></div>
-            <span class="status-text">引擎就绪</span>
+            <span class="status-text" data-i18n="engineReady">引擎就绪</span>
           </div>
-          <button class="theme-toggle" id="theme-toggle" title="切换主题">
+          <button class="theme-toggle" id="theme-toggle" data-i18n-title="toggleTheme" title="切换主题">
             <svg class="theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
               <line x1="12" y1="1" x2="12" y2="3"/>
@@ -169,8 +191,8 @@
           <div class="hero-content">
             <div class="hero-icon" id="hero-icon"></div>
             <div class="hero-text">
-              <h1 id="hero-title">系统清理</h1>
-              <p id="hero-subtitle">清理缓存、日志和临时文件，释放磁盘空间</p>
+              <h1 id="hero-title" data-i18n="clean">系统清理</h1>
+              <p id="hero-subtitle" data-i18n="cleanDesc">清理缓存、日志和临时文件</p>
             </div>
           </div>
         </section>
@@ -185,7 +207,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                 </div>
                 <div class="stat-info">
-                  <span class="stat-label">可清理项目</span>
+                  <span class="stat-label" data-i18n="cleanableItems">可清理项目</span>
                   <span class="stat-value" id="stat-clean-items">--</span>
                 </div>
               </div>
@@ -194,7 +216,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15V6a2 2 0 00-2-2H5a2 2 0 00-2 2v9"/><path d="M3 15h18v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3z"/></svg>
                 </div>
                 <div class="stat-info">
-                  <span class="stat-label">可释放空间</span>
+                  <span class="stat-label" data-i18n="freeableSpace">可释放空间</span>
                   <span class="stat-value" id="stat-clean-size">--</span>
                 </div>
               </div>
@@ -203,7 +225,7 @@
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 002-2V8a2 2 0 00-2-2h-7.93a2 2 0 01-1.66-.9l-.82-1.2A2 2 0 007.93 3H4a2 2 0 00-2 2v13c0 1.1.9 2 2 2z"/></svg>
                 </div>
                 <div class="stat-info">
-                  <span class="stat-label">分类数</span>
+                  <span class="stat-label" data-i18n="categories">分类数</span>
                   <span class="stat-value" id="stat-clean-cats">--</span>
                 </div>
               </div>
@@ -211,15 +233,15 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-scan">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                扫描
+                <span data-i18n="scan">扫描</span>
               </button>
               <button class="btn btn-accent" id="btn-clean">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
-                立即清理
+                <span data-i18n="clean">立即清理</span>
               </button>
               <button class="btn btn-secondary" id="btn-clean-whitelist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
-                白名单
+                <span data-i18n="whitelist">白名单</span>
               </button>
             </div>
           </div>
@@ -229,7 +251,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-scan-apps">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                扫描应用
+                <span data-i18n="scanApps">扫描应用</span>
               </button>
             </div>
           </div>
@@ -239,7 +261,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-analyze">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m7 14 4-4 4 4 6-6"/><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109"/></svg>
-                开始分析
+                <span data-i18n="startAnalyze">开始分析</span>
               </button>
             </div>
           </div>
@@ -249,7 +271,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-status">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                刷新状态
+                <span data-i18n="refreshStatus">刷新状态</span>
               </button>
             </div>
           </div>
@@ -259,19 +281,19 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-optimize-scan">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                扫描优化项
+                <span data-i18n="scanOptimize">扫描优化项</span>
               </button>
               <button class="btn btn-accent" id="btn-optimize-run" disabled>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4"/><path d="m16.24 7.76 2.83-2.83"/><path d="M18 12h4"/><path d="m16.24 16.24 2.83 2.83"/><path d="M12 18v4"/><path d="m4.93 19.07 2.83-2.83"/><path d="M2 12h4"/><path d="m4.93 4.93 2.83 2.83"/></svg>
-                执行优化
+                <span data-i18n="runOptimize">执行优化</span>
               </button>
               <button class="btn btn-secondary" id="btn-optimize-stop" disabled>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
-                停止
+                <span data-i18n="stop">停止</span>
               </button>
               <button class="btn btn-secondary" id="btn-optimize-whitelist">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
-                白名单
+                <span data-i18n="whitelist">白名单</span>
               </button>
             </div>
           </div>
@@ -281,11 +303,11 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-history">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 9z"/><path d="M12 7v5l3 3"/></svg>
-                刷新历史
+                <span data-i18n="refreshHistory">刷新历史</span>
               </button>
               <button class="btn btn-secondary" id="btn-history-json">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                JSON 格式
+                <span data-i18n="jsonFormat">JSON 格式</span>
               </button>
             </div>
           </div>
@@ -295,19 +317,19 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-purge">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                扫描项目
+                <span data-i18n="scanProjects">扫描项目</span>
               </button>
               <button class="btn btn-secondary" id="btn-purge-dry-run">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                预览清理
+                <span data-i18n="previewClean">预览清理</span>
               </button>
               <button class="btn btn-accent" id="btn-purge-clean">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
-                清理项目
+                <span data-i18n="cleanProjects">清理项目</span>
               </button>
               <button class="btn btn-secondary" id="btn-purge-paths">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-                扫描目录
+                <span data-i18n="scanDirs">扫描目录</span>
               </button>
             </div>
           </div>
@@ -317,11 +339,11 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-installer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-                扫描安装包
+                <span data-i18n="scanInstallers">扫描安装包</span>
               </button>
               <button class="btn btn-accent" id="btn-installer-clean">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
-                清理安装包
+                <span data-i18n="cleanInstallers">清理安装包</span>
               </button>
             </div>
           </div>
@@ -331,11 +353,11 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-touchid">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="10"/></svg>
-                配置 Touch ID
+                <span data-i18n="configTouchid">配置 Touch ID</span>
               </button>
               <button class="btn btn-accent" id="btn-touchid-enable">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                启用 Touch ID
+                <span data-i18n="enableTouchid">启用 Touch ID</span>
               </button>
             </div>
           </div>
@@ -345,7 +367,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-update">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-                检查更新
+                <span data-i18n="checkUpdate">检查更新</span>
               </button>
             </div>
           </div>
@@ -355,7 +377,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-remove">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                移除应用
+                <span data-i18n="removeApp">移除应用</span>
               </button>
             </div>
           </div>
@@ -365,7 +387,7 @@
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-completion">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                设置补全
+                <span data-i18n="setupCompletion">设置补全</span>
               </button>
             </div>
           </div>
@@ -374,260 +396,359 @@
           <div class="action-group" data-feature="envs">
             <div class="btn-row">
               <button class="btn btn-primary" id="btn-envs-refresh">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-                刷新列表
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                <span data-i18n="refreshList">刷新列表</span>
               </button>
               <button class="btn btn-accent" id="btn-envs-add">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                新增变量
+                <span data-i18n="addEnv">新增变量</span>
               </button>
             </div>
-            <div class="envs-search-row">
-              <input type="text" class="envs-search" id="envs-search" placeholder="搜索变量名或值..." />
+            <div class="search-bar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="envs-search" data-i18n-placeholder="searchEnv" placeholder="搜索变量..." />
+            </div>
+          </div>
+
+          <!-- 设置页面 -->
+          <div class="action-group" data-feature="settings">
+            <div class="settings-container">
+              <!-- 语言设置 -->
+              <div class="settings-section">
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title" data-i18n="language">语言</div>
+                    <div class="settings-item-desc" data-i18n="languageDesc">选择应用显示语言</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <select id="settings-language" class="settings-select">
+                      <option value="zh">中文</option>
+                      <option value="en">English</option>
+                      <option value="ru">Русский</option>
+                      <option value="ja">日本語</option>
+                      <option value="ko">한국어</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- 主题设置 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title" data-i18n="theme">主题</div>
+                    <div class="settings-item-desc" data-i18n="themeDesc">选择应用主题</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <div class="theme-switcher">
+                      <button class="theme-option" data-theme-value="light">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="5"/>
+                          <line x1="12" y1="1" x2="12" y2="3"/>
+                          <line x1="12" y1="21" x2="12" y2="23"/>
+                          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                          <line x1="1" y1="12" x2="3" y2="12"/>
+                          <line x1="21" y1="12" x2="23" y2="12"/>
+                          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <span data-i18n="themeLight">浅色</span>
+                      </button>
+                      <button class="theme-option" data-theme-value="dark">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                        <span data-i18n="themeDark">深色</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 版本信息 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title">Mole Desktop</div>
+                    <div class="settings-item-desc">Version <span id="settings-version">1.0.0</span></div>
+                  </div>
+                  <div class="settings-item-control">
+                    <span class="settings-badge">Tauri</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
         <!-- 结果区 -->
-        <section class="result-section">
-          <div class="result-panel" id="panel-clean">
+        <section class="result-section" id="result-section">
+          <!-- 清理结果 -->
+          <div class="result-panel active" id="panel-clean">
             <div class="result-placeholder" id="clean-placeholder">
               <div class="placeholder-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
               </div>
-              <p class="placeholder-title">点击「扫描」查看可清理项目</p>
-              <p class="placeholder-hint">系统将分析缓存、日志、残留文件等</p>
+              <p class="placeholder-title" data-i18n="cleanPlaceholder">点击「扫描」查看可清理项目</p>
+              <p class="placeholder-hint" data-i18n="cleanHint">清理缓存、日志和临时文件，释放磁盘空间</p>
             </div>
             <div class="result-loading" id="clean-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在扫描...</p>
-              <p class="loading-sub">分析系统文件和目录中</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="clean-result" style="display:none"></div>
           </div>
 
+          <!-- 卸载结果 -->
           <div class="result-panel" id="panel-uninstall">
             <div class="result-placeholder" id="uninstall-placeholder">
               <div class="placeholder-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
               </div>
-              <p class="placeholder-title">点击「扫描应用」查看已安装应用</p>
-              <p class="placeholder-hint">列出所有应用及其关联文件</p>
+              <p class="placeholder-title" data-i18n="uninstallPlaceholder">点击「扫描应用」查看已安装应用</p>
+              <p class="placeholder-hint" data-i18n="uninstallHint">卸载应用及其残留文件</p>
             </div>
             <div class="result-loading" id="uninstall-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在扫描...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="uninstall-result" style="display:none"></div>
           </div>
 
+          <!-- 分析结果 -->
           <div class="result-panel" id="panel-analyze">
             <div class="result-placeholder" id="analyze-placeholder">
               <div class="placeholder-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109"/><path d="m7 14 4-4 4 4 6-6"/></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 21H4.6c-.56 0-.84 0-1.054-.109a1 1 0 01-.437-.437C3 20.24 3 19.96 3 19.4V3m4 14l4-4 4 4 6-6"/></svg>
               </div>
-              <p class="placeholder-title">点击「开始分析」可视化磁盘使用</p>
-              <p class="placeholder-hint">识别大文件和占用空间最多的目录</p>
+              <p class="placeholder-title" data-i18n="analyzePlaceholder">点击「开始分析」查看磁盘使用情况</p>
+              <p class="placeholder-hint" data-i18n="analyzeHint">可视化磁盘使用情况，识别大文件</p>
             </div>
             <div class="result-loading" id="analyze-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在分析...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="analyze-result" style="display:none"></div>
           </div>
 
+          <!-- 状态结果 -->
           <div class="result-panel" id="panel-status">
             <div class="result-placeholder" id="status-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
               </div>
-              <p class="placeholder-title">点击「刷新状态」查看系统健康</p>
-              <p class="placeholder-hint">显示 CPU、内存、存储等关键指标</p>
+              <p class="placeholder-title" data-i18n="statusPlaceholder">点击「刷新状态」查看系统信息</p>
+              <p class="placeholder-hint" data-i18n="statusHint">实时系统健康监控（CPU/内存/存储）</p>
             </div>
             <div class="result-loading" id="status-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在获取...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="status-result" style="display:none"></div>
           </div>
 
+          <!-- 优化结果 -->
           <div class="result-panel" id="panel-optimize">
             <div class="result-placeholder" id="optimize-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852 1 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
               </div>
-              <p class="placeholder-title">点击「扫描优化项」查看可优化内容</p>
-              <p class="placeholder-hint">系统将列出所有可优化的项目供您选择</p>
+              <p class="placeholder-title" data-i18n="optimizePlaceholder">点击「扫描优化项」查看可优化项目</p>
+              <p class="placeholder-hint" data-i18n="optimizeHint">刷新缓存和系统服务</p>
             </div>
             <div class="result-loading" id="optimize-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在扫描...</p>
-              <p class="loading-sub">分析系统优化项中</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="optimize-result" style="display:none"></div>
           </div>
 
+          <!-- 历史结果 -->
           <div class="result-panel" id="panel-history">
             <div class="result-placeholder" id="history-placeholder">
               <div class="placeholder-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
               </div>
-              <p class="placeholder-title">点击「刷新历史」查看操作记录</p>
-              <p class="placeholder-hint">追踪过去的清理和优化动作</p>
+              <p class="placeholder-title" data-i18n="historyPlaceholder">点击「刷新历史」查看操作记录</p>
+              <p class="placeholder-hint" data-i18n="historyHint">查看历史操作记录</p>
             </div>
             <div class="result-loading" id="history-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在加载...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="history-result" style="display:none"></div>
           </div>
 
+          <!-- 项目清理结果 -->
           <div class="result-panel" id="panel-purge">
             <div class="result-placeholder" id="purge-placeholder">
               <div class="placeholder-icon">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
               </div>
-              <p class="placeholder-title">点击「扫描项目」查看可清理的构建产物</p>
-              <p class="placeholder-hint">清理 node_modules、target、build 等项目文件</p>
+              <p class="placeholder-title" data-i18n="purgePlaceholder">点击「扫描项目」查看可清理项目</p>
+              <p class="placeholder-hint" data-i18n="purgeHint">清理项目构建产物（node_modules、target 等）</p>
             </div>
             <div class="result-loading" id="purge-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在扫描...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="purge-result" style="display:none"></div>
           </div>
 
+          <!-- 安装包清理结果 -->
           <div class="result-panel" id="panel-installer">
             <div class="result-placeholder" id="installer-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               </div>
-              <p class="placeholder-title">点击「扫描安装包」查看可清理的安装文件</p>
-              <p class="placeholder-hint">清理 DMG、PKG 等安装包文件</p>
+              <p class="placeholder-title" data-i18n="installerPlaceholder">点击「扫描安装包」查看可清理文件</p>
+              <p class="placeholder-hint" data-i18n="installerHint">查找并移除安装包文件（.dmg/.pkg 等）</p>
             </div>
             <div class="result-loading" id="installer-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在扫描...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="installer-result" style="display:none"></div>
           </div>
 
+          <!-- Touch ID 结果 -->
           <div class="result-panel" id="panel-touchid">
             <div class="result-placeholder" id="touchid-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="10"/></svg>
               </div>
-              <p class="placeholder-title">点击「配置 Touch ID」启用指纹认证</p>
-              <p class="placeholder-hint">配置 Touch ID 用于 sudo 认证</p>
+              <p class="placeholder-title" data-i18n="touchidPlaceholder">点击「配置 Touch ID」进行设置</p>
+              <p class="placeholder-hint" data-i18n="touchidHint">配置 Touch ID 用于 sudo 认证</p>
             </div>
             <div class="result-loading" id="touchid-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在配置...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="touchid-result" style="display:none"></div>
           </div>
 
+          <!-- 应用更新结果 -->
           <div class="result-panel" id="panel-update">
             <div class="result-placeholder" id="update-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
               </div>
-              <p class="placeholder-title">点击「检查更新」升级到最新版本</p>
-              <p class="placeholder-hint">获取最新的 Mole 版本和功能</p>
+              <p class="placeholder-title" data-i18n="updatePlaceholder">点击「检查更新」查看可用更新</p>
+              <p class="placeholder-hint" data-i18n="updateHint">更新 Mole 到最新版本</p>
             </div>
             <div class="result-loading" id="update-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在检查...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="update-result" style="display:none"></div>
           </div>
 
+          <!-- 应用移除结果 -->
           <div class="result-panel" id="panel-remove">
             <div class="result-placeholder" id="remove-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
               </div>
-              <p class="placeholder-title">点击「移除应用」从系统中卸载 Mole</p>
-              <p class="placeholder-hint">完全移除 Mole 及其相关文件</p>
+              <p class="placeholder-title" data-i18n="removePlaceholder">点击「移除应用」进行移除</p>
+              <p class="placeholder-hint" data-i18n="removeHint">从系统中移除 Mole</p>
             </div>
             <div class="result-loading" id="remove-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在移除...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="remove-result" style="display:none"></div>
           </div>
 
+          <!-- Shell 补全结果 -->
           <div class="result-panel" id="panel-completion">
             <div class="result-placeholder" id="completion-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
               </div>
-              <p class="placeholder-title">点击「设置补全」配置 Shell 自动补全</p>
-              <p class="placeholder-hint">为 zsh/bash/fish 设置 mo 命令补全</p>
+              <p class="placeholder-title" data-i18n="completionPlaceholder">点击「设置补全」进行配置</p>
+              <p class="placeholder-hint" data-i18n="completionHint">设置 Shell 自动补全</p>
             </div>
             <div class="result-loading" id="completion-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在设置...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="completion-result" style="display:none"></div>
           </div>
 
-          <!-- 环境变量面板 -->
+          <!-- 环境变量结果 -->
           <div class="result-panel" id="panel-envs">
             <div class="result-placeholder" id="envs-placeholder">
               <div class="placeholder-icon">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/></svg>
               </div>
-              <p class="placeholder-title">点击「刷新列表」查看环境变量</p>
-              <p class="placeholder-hint">查看、新增、编辑和删除环境变量</p>
+              <p class="placeholder-title" data-i18n="envPlaceholder">点击「刷新列表」查看环境变量</p>
+              <p class="placeholder-hint" data-i18n="envHint">查看、新增、编辑和删除环境变量</p>
             </div>
             <div class="result-loading" id="envs-loading" style="display:none">
               <div class="loading-pulse">
                 <div class="pulse-ring"></div>
                 <div class="pulse-core"></div>
               </div>
-              <p class="loading-text">正在加载...</p>
+              <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="envs-result" style="display:none"></div>
           </div>
+
+          <!-- 设置结果（隐藏，设置页面不需要结果区） -->
+          <div class="result-panel" id="panel-settings" style="display:none">
+          </div>
         </section>
       </main>
+    </div>
+
+    <!-- 对话框 -->
+    <div class="dialog-overlay" id="dialog-overlay" style="display:none">
+      <div class="dialog">
+        <div class="dialog-header">
+          <h3 class="dialog-title" id="dialog-title"></h3>
+          <button class="dialog-close" id="dialog-close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="dialog-content" id="dialog-content"></div>
+        <div class="dialog-footer" id="dialog-footer"></div>
+      </div>
     </div>
 
     <!-- Toast 通知 -->
