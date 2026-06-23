@@ -927,7 +927,7 @@ function updateThemeIcon(theme) {
 function updateThemeSelector(theme) {
   const themeButtons = document.querySelectorAll('.theme-option');
   themeButtons.forEach(btn => {
-    const btnTheme = btn.getAttribute('data-theme');
+    const btnTheme = btn.getAttribute('data-theme-value');
     if (btnTheme === theme) {
       btn.classList.add('active');
     } else {
