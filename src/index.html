@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mole - Mac 系统优化工具</title>
+    <title>Mole Desktop</title>
     <script type="module" src="/main.js" defer></script>
   </head>
 
@@ -41,7 +41,7 @@
               <line x1="86" y1="88" x2="70" y2="86" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
-          <h1 class="app-title">Mole</h1>
+          <h1 class="app-title">Mole Desktop</h1>
           <span class="version-badge" id="version-info">v1.0.0</span>
         </div>
 
@@ -126,6 +126,15 @@
               <line x1="12" y1="19" x2="20" y2="19"/>
             </svg>
             <span>Shell 补全</span>
+          </button>
+          <button class="nav-item" data-feature="envs">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16M4 12h16M4 18h16"/>
+              <circle cx="8" cy="6" r="1" fill="currentColor"/>
+              <circle cx="8" cy="12" r="1" fill="currentColor"/>
+              <circle cx="8" cy="18" r="1" fill="currentColor"/>
+            </svg>
+            <span>环境变量</span>
           </button>
         </nav>
 
@@ -360,6 +369,23 @@
               </button>
             </div>
           </div>
+
+          <!-- 环境变量 -->
+          <div class="action-group" data-feature="envs">
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btn-envs-refresh">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                刷新列表
+              </button>
+              <button class="btn btn-accent" id="btn-envs-add">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                新增变量
+              </button>
+            </div>
+            <div class="envs-search-row">
+              <input type="text" class="envs-search" id="envs-search" placeholder="搜索变量名或值..." />
+            </div>
+          </div>
         </section>
 
         <!-- 结果区 -->
@@ -580,6 +606,25 @@
               <p class="loading-text">正在设置...</p>
             </div>
             <div class="result-list" id="completion-result" style="display:none"></div>
+          </div>
+
+          <!-- 环境变量面板 -->
+          <div class="result-panel" id="panel-envs">
+            <div class="result-placeholder" id="envs-placeholder">
+              <div class="placeholder-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="1" fill="currentColor"/><circle cx="8" cy="12" r="1" fill="currentColor"/><circle cx="8" cy="18" r="1" fill="currentColor"/></svg>
+              </div>
+              <p class="placeholder-title">点击「刷新列表」查看环境变量</p>
+              <p class="placeholder-hint">查看、新增、编辑和删除环境变量</p>
+            </div>
+            <div class="result-loading" id="envs-loading" style="display:none">
+              <div class="loading-pulse">
+                <div class="pulse-ring"></div>
+                <div class="pulse-core"></div>
+              </div>
+              <p class="loading-text">正在加载...</p>
+            </div>
+            <div class="result-list" id="envs-result" style="display:none"></div>
           </div>
         </section>
       </main>

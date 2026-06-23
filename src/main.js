@@ -111,6 +111,17 @@ const features = {
     </svg>`,
     event: 'completion-output',
   },
+  envs: {
+    title: '环境变量',
+    subtitle: '管理系统环境变量',
+    icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 6h16M4 12h16M4 18h16"/>
+      <circle cx="8" cy="6" r="1" fill="currentColor"/>
+      <circle cx="8" cy="12" r="1" fill="currentColor"/>
+      <circle cx="8" cy="18" r="1" fill="currentColor"/>
+    </svg>`,
+    event: 'envs-output',
+  },
 };
 
 // 当前选中的功能
@@ -118,10 +129,16 @@ let currentFeature = 'clean';
 
 // 显示加载状态
 function showLoading(feature) {
+  const panel = document.querySelector(`#panel-${feature}`);
   const placeholder = document.querySelector(`#${feature}-placeholder`);
   const loading = document.querySelector(`#${feature}-loading`);
   const result = document.querySelector(`#${feature}-result`);
-  
+
+  // 激活结果面板
+  if (panel && !panel.classList.contains('active')) {
+    panel.classList.add('active');
+  }
+
   if (placeholder) placeholder.style.display = 'none';
   if (loading) {
     loading.style.display = 'flex';
@@ -131,6 +148,12 @@ function showLoading(feature) {
   if (result) {
     result.style.display = 'none';
   }
+}
+
+// 隐藏加载状态
+function hideLoading(feature) {
+  const loading = document.querySelector(`#${feature}-loading`);
+  if (loading) loading.style.display = 'none';
 }
 
 // 显示结果状态
@@ -1027,6 +1050,171 @@ async function init() {
   document.querySelector('#btn-completion').addEventListener('click', async () => {
     await executeWithStreaming('completion', () => invoke('completion'));
   });
+
+  // 环境变量管理
+  let allEnvs = []; // 存储所有环境变量
+
+  // 渲染环境变量列表
+  function renderEnvs(envs) {
+    const result = document.querySelector('#envs-result');
+    if (!result) return;
+
+    if (!envs || envs.length === 0) {
+      result.innerHTML = '<div class="list-item"><div class="list-item-content"><div class="list-item-text">无环境变量</div></div></div>';
+      result.style.display = 'block';
+      void result.offsetHeight;
+      return;
+    }
+
+    let html = '<div class="list-group">';
+    html += '<div class="list-group-title">环境变量 (' + envs.length + ')</div>';
+
+    for (const env of envs) {
+      html += '<div class="list-item env-item" data-name="' + escapeHtml(env.name) + '">';
+      html += '<div class="list-item-content">';
+      html += '<svg class="list-item-icon info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
+      html += '<div class="list-item-text">';
+      html += '<div class="env-name">' + escapeHtml(env.name) + '</div>';
+      html += '<div class="env-value">' + escapeHtml(env.value) + '</div>';
+      if (env.source) {
+        html += '<div class="env-source">' + escapeHtml(env.source) + '</div>';
+      }
+      html += '</div>';
+      html += '</div>';
+      html += '<div class="env-actions">';
+      html += '<button class="btn-icon btn-edit-env" data-name="' + escapeHtml(env.name) + '" data-value="' + escapeHtml(env.value) + '" data-source="' + escapeHtml(env.source || '') + '" title="编辑">';
+      html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+      html += '</button>';
+      html += '<button class="btn-icon btn-delete-env" data-name="' + escapeHtml(env.name) + '" data-source="' + escapeHtml(env.source || '') + '" title="删除">';
+      html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
+      html += '</button>';
+      html += '</div>';
+      html += '</div>';
+    }
+
+    html += '</div>';
+
+    result.innerHTML = html;
+    result.style.display = 'block';
+    void result.offsetHeight;
+
+    // 绑定编辑按钮事件
+    result.querySelectorAll('.btn-edit-env').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const name = e.currentTarget.dataset.name;
+        const oldValue = e.currentTarget.dataset.value;
+        const source = e.currentTarget.dataset.source;
+        const newValue = prompt('编辑环境变量 ' + name, oldValue);
+        if (newValue !== null && newValue !== oldValue) {
+          try {
+            if (source) {
+              // 持久化到 shell 配置文件
+              await invoke('add_shell_env', { name, value: newValue, source });
+            } else {
+              // 仅当前进程生效
+              await invoke('set_env', { name, value: newValue });
+            }
+            toast('已更新: ' + name, 'success');
+            await loadEnvs();
+          } catch (err) {
+            toast('更新失败: ' + err, 'error');
+          }
+        }
+      });
+    });
+
+    // 绑定删除按钮事件
+    result.querySelectorAll('.btn-delete-env').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const name = e.currentTarget.dataset.name;
+        const source = e.currentTarget.dataset.source;
+        if (confirm('确定要删除环境变量 ' + name + ' 吗？')) {
+          try {
+            if (source) {
+              // 从 shell 配置文件中删除
+              await invoke('remove_shell_env', { name, source });
+            } else {
+              // 仅从当前进程删除
+              await invoke('delete_env', { name });
+            }
+            toast('已删除: ' + name, 'success');
+            await loadEnvs();
+          } catch (err) {
+            toast('删除失败: ' + err, 'error');
+          }
+        }
+      });
+    });
+  }
+
+  // 加载环境变量
+  async function loadEnvs() {
+    showLoading('envs');
+    try {
+      // 加载 shell 配置文件中的环境变量
+      const shellEnvs = await invoke('list_shell_envs');
+      allEnvs = shellEnvs;
+      hideLoading('envs');
+      renderEnvs(allEnvs);
+    } catch (err) {
+      hideLoading('envs');
+      toast('加载失败: ' + err, 'error');
+    }
+  }
+
+  // 搜索过滤
+  function filterEnvs(keyword) {
+    if (!keyword) {
+      renderEnvs(allEnvs);
+      return;
+    }
+    const lower = keyword.toLowerCase();
+    const filtered = allEnvs.filter(env =>
+      env.name.toLowerCase().includes(lower) ||
+      env.value.toLowerCase().includes(lower)
+    );
+    renderEnvs(filtered);
+  }
+
+  // 绑定刷新按钮
+  document.querySelector('#btn-envs-refresh').addEventListener('click', async () => {
+    await loadEnvs();
+  });
+
+  // 绑定新增按钮
+  document.querySelector('#btn-envs-add').addEventListener('click', async () => {
+    const name = prompt('请输入变量名:');
+    if (!name) return;
+    const value = prompt('请输入变量值:');
+    if (value === null) return;
+
+    // 选择要写入的配置文件
+    const source = prompt('选择配置文件 (.zshrc / .bash_profile / .bashrc):', '.zshrc');
+    if (!source) return;
+
+    try {
+      // 持久化到 shell 配置文件
+      await invoke('add_shell_env', { name, value, source });
+      toast('已添加: ' + name, 'success');
+      await loadEnvs();
+    } catch (err) {
+      toast('添加失败: ' + err, 'error');
+    }
+  });
+
+  // 绑定搜索框
+  document.querySelector('#envs-search').addEventListener('input', (e) => {
+    filterEnvs(e.target.value);
+  });
+
+  // 切换到环境变量页面时自动加载
+  const originalSwitchFeature = switchFeature;
+  switchFeature = function(feature) {
+    originalSwitchFeature(feature);
+    if (feature === 'envs' && allEnvs.length === 0) {
+      loadEnvs();
+    }
+  };
 }
 
 // 启动

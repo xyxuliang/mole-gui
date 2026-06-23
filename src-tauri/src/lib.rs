@@ -74,16 +74,29 @@ pub struct StreamEvent {
     pub exit_code: Option<i32>,
 }
 
-/// 获取内置 Mole 可执行文件路径
+/// 获取 Mole 可执行文件路径
+/// 开发模式：优先使用系统安装的 mole
+/// 打包模式：使用应用内置的 mole
 fn get_mole_path(app: &tauri::AppHandle) -> std::path::PathBuf {
     use tauri::Manager;
-    // 优先使用应用资源目录中的内置 mole
+    
+    // 开发模式：优先使用系统安装的 mole
+    #[cfg(debug_assertions)]
+    {
+        let system_mole = std::path::PathBuf::from("/opt/homebrew/bin/mo");
+        if system_mole.exists() {
+            return system_mole;
+        }
+    }
+    
+    // 打包模式：使用应用资源目录中的内置 mole
     if let Some(resource_dir) = app.path().resource_dir().ok() {
         let mole_path = resource_dir.join("bin").join("mole");
         if mole_path.exists() {
             return mole_path;
         }
     }
+    
     // 回退到系统安装路径
     std::path::PathBuf::from("/opt/homebrew/bin/mo")
 }
@@ -633,6 +646,194 @@ async fn is_installed(app: tauri::AppHandle) -> bool {
     std::path::Path::new("/opt/homebrew/bin/mo").exists()
 }
 
+/// 环境变量信息结构
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct EnvVar {
+    /// 变量名
+    pub name: String,
+    /// 变量值
+    pub value: String,
+}
+
+/// 列出所有环境变量
+#[tauri::command]
+async fn list_envs() -> Result<Vec<EnvVar>, String> {
+    let mut envs: Vec<EnvVar> = std::env::vars()
+        .map(|(name, value)| EnvVar { name, value })
+        .collect();
+    // 按变量名排序
+    envs.sort_by(|a, b| a.name.cmp(&b.name));
+    Ok(envs)
+}
+
+/// 获取单个环境变量
+#[tauri::command]
+async fn get_env(name: String) -> Result<Option<String>, String> {
+    Ok(std::env::var(&name).ok())
+}
+
+/// 设置环境变量（仅当前进程生效）
+#[tauri::command]
+async fn set_env(name: String, value: String) -> Result<(), String> {
+    // Rust 1.80+ 中 set_var 是 unsafe，因为多线程环境下修改环境变量可能导致数据竞争
+    unsafe {
+        std::env::set_var(&name, &value);
+    }
+    Ok(())
+}
+
+/// 删除环境变量（仅当前进程生效）
+#[tauri::command]
+async fn delete_env(name: String) -> Result<(), String> {
+    // Rust 1.80+ 中 remove_var 是 unsafe，因为多线程环境下修改环境变量可能导致数据竞争
+    unsafe {
+        std::env::remove_var(&name);
+    }
+    Ok(())
+}
+
+/// Shell 配置文件环境变量结构
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct ShellEnvVar {
+    /// 变量名
+    pub name: String,
+    /// 变量值
+    pub value: String,
+    /// 来源文件
+    pub source: String,
+}
+
+/// 获取 shell 配置文件路径
+fn get_shell_config_paths() -> Vec<std::path::PathBuf> {
+    let home = std::env::var("HOME").unwrap_or_else(|_| "/Users/os".to_string());
+    vec![
+        std::path::PathBuf::from(&home).join(".zshrc"),
+        std::path::PathBuf::from(&home).join(".bash_profile"),
+        std::path::PathBuf::from(&home).join(".bashrc"),
+    ]
+}
+
+/// 从 shell 配置文件中读取环境变量
+#[tauri::command]
+async fn list_shell_envs() -> Result<Vec<ShellEnvVar>, String> {
+    let mut envs = Vec::new();
+    let export_pattern = regex::Regex::new(r"^export\s+([A-Za-z_][A-Za-z0-9_]*)=(.+)$")
+        .map_err(|e| e.to_string())?;
+
+    for path in get_shell_config_paths() {
+        if path.exists() {
+            if let Ok(content) = std::fs::read_to_string(&path) {
+                for line in content.lines() {
+                    let line = line.trim();
+                    if let Some(caps) = export_pattern.captures(line) {
+                        let name = caps.get(1).unwrap().as_str().to_string();
+                        let value = caps.get(2).unwrap().as_str().to_string();
+                        // 移除引号
+                        let value = value.trim_matches(|c| c == '"' || c == '\'').to_string();
+                        envs.push(ShellEnvVar {
+                            name,
+                            value,
+                            source: path.file_name().unwrap().to_string_lossy().to_string(),
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    // 按变量名排序
+    envs.sort_by(|a, b| a.name.cmp(&b.name));
+    Ok(envs)
+}
+
+/// 添加环境变量到 shell 配置文件
+#[tauri::command]
+async fn add_shell_env(name: String, value: String, source: String) -> Result<(), String> {
+    let home = std::env::var("HOME").map_err(|_| "无法获取 HOME 目录")?;
+    let path = std::path::PathBuf::from(&home).join(&source);
+
+    // 检查文件是否存在，不存在则创建
+    if !path.exists() {
+        std::fs::write(&path, "").map_err(|e| e.to_string())?;
+    }
+
+    // 读取现有内容
+    let mut content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
+
+    // 检查是否已存在该变量
+    let export_pattern = regex::Regex::new(&format!(r"^export\s+{}=", regex::escape(&name)))
+        .map_err(|e| e.to_string())?;
+
+    let mut found = false;
+    let mut new_lines: Vec<String> = Vec::new();
+
+    for line in content.lines() {
+        if export_pattern.is_match(line.trim()) {
+            // 替换已存在的变量
+            new_lines.push(format!("export {}=\"{}\"", name, value));
+            found = true;
+        } else {
+            new_lines.push(line.to_string());
+        }
+    }
+
+    // 如果是新变量，添加到末尾
+    if !found {
+        new_lines.push(format!("export {}=\"{}\"", name, value));
+    }
+
+    // 写回文件
+    content = new_lines.join("\n");
+    if !content.ends_with('\n') {
+        content.push('\n');
+    }
+    std::fs::write(&path, content).map_err(|e| e.to_string())?;
+
+    // 同时更新当前进程的环境变量
+    unsafe {
+        std::env::set_var(&name, &value);
+    }
+
+    Ok(())
+}
+
+/// 从 shell 配置文件中删除环境变量
+#[tauri::command]
+async fn remove_shell_env(name: String, source: String) -> Result<(), String> {
+    let home = std::env::var("HOME").map_err(|_| "无法获取 HOME 目录")?;
+    let path = std::path::PathBuf::from(&home).join(&source);
+
+    if !path.exists() {
+        return Ok(());
+    }
+
+    // 读取现有内容
+    let content = std::fs::read_to_string(&path).map_err(|e| e.to_string())?;
+    let export_pattern = regex::Regex::new(&format!(r"^export\s+{}=", regex::escape(&name)))
+        .map_err(|e| e.to_string())?;
+
+    // 过滤掉该变量的行
+    let new_lines: Vec<String> = content
+        .lines()
+        .filter(|line| !export_pattern.is_match(line.trim()))
+        .map(|s| s.to_string())
+        .collect();
+
+    // 写回文件
+    let mut new_content = new_lines.join("\n");
+    if !new_content.ends_with('\n') && !new_content.is_empty() {
+        new_content.push('\n');
+    }
+    std::fs::write(&path, new_content).map_err(|e| e.to_string())?;
+
+    // 同时从当前进程中删除
+    unsafe {
+        std::env::remove_var(&name);
+    }
+
+    Ok(())
+}
+
 /// 初始化 Tauri 应用
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -664,6 +865,13 @@ pub fn run() {
             remove,
             is_installed,
             stop_command,
+            list_envs,
+            get_env,
+            set_env,
+            delete_env,
+            list_shell_envs,
+            add_shell_env,
+            remove_shell_env,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

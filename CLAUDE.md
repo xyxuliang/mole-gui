@@ -1,4 +1,4 @@
-# Mole GUI
+# Mole Desktop
 
 基于 [Mole](https://github.com/tw93/mole) CLI 的 macOS 桌面版图形界面，使用 Tauri 框架构建。
 
@@ -24,6 +24,8 @@
 | 项目清理 | 清理项目构建产物（node_modules、target 等） | `mo purge` / `mo purge --dry-run` |
 | 安装包清理 | 查找并移除安装包文件（.dmg/.pkg 等） | `mo installer` |
 | Touch ID 配置 | 配置 Touch ID 用于 sudo 认证 | `mo touchid` |
+| Shell 补全 | 设置 Shell 自动补全 | `mo completion` |
+| 环境变量 | 查看、新增、编辑、删除环境变量，支持持久化到 .zshrc/.bash_profile/.bashrc | 原生实现 |
 | 应用更新 | 更新 Mole 到最新版本 | `mo update` |
 | 应用移除 | 从系统中移除 Mole | `mo remove` |
 
@@ -31,7 +33,7 @@
 
 - **现代化 UI 设计**: 采用 cc-switch 风格的侧边栏导航布局
 - **卡片式信息展示**: 统计卡片和结果列表清晰展示数据
-- **流畅动画效果**: 过渡动画和加载动画提升用户体验
+- **流畅动画效果**: 紧凑的加载动画和过渡效果
 - **双主题支持**: 支持亮色主题和暗色主题切换
 - **实时流式输出**: 命令执行过程实时显示，避免 UI 卡顿
 - **响应式设计**: 适配不同屏幕尺寸
