@@ -1186,11 +1186,15 @@ async function init() {
   // 渲染环境变量列表
   function renderEnvs(envs) {
     const result = document.querySelector('#envs-result');
+    const placeholder = document.querySelector('#envs-placeholder');
     if (!result) return;
+
+    // 隐藏占位提示
+    if (placeholder) placeholder.style.display = 'none';
+    result.style.display = 'block';
 
     if (!envs || envs.length === 0) {
       result.innerHTML = '<div class="list-item"><div class="list-item-content"><div class="list-item-text">无环境变量</div></div></div>';
-      result.style.display = 'block';
       void result.offsetHeight;
       return;
     }

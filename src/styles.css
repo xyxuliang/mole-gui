@@ -780,6 +780,8 @@ body {
   flex-direction: column;
   gap: 16px;
   animation: fadeIn 0.3s ease;
+  flex: 1;
+  min-height: 0;
 }
 
 .result-panel.active {
@@ -919,10 +921,11 @@ body {
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   padding: 20px;
-  max-height: 500px;
+  flex: 1;
   overflow-y: auto;
   box-shadow: var(--shadow-sm);
   animation: fadeIn 0.3s ease;
+  min-height: 0;
 }
 
 /* 实时输出样式 */
