@@ -8,6 +8,12 @@ on:
       - 'v*'
   # 手动触发
   workflow_dispatch:
+    inputs:
+      release:
+        description: '创建 Release'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   build:
@@ -68,7 +74,19 @@ jobs:
       - name: Build Tauri app
         run: npm run tauri build
 
-      # 9. 上传 DMG 安装包
+      # 9. 重命名安装包，添加 CPU 架构信息
+      - name: Rename artifacts with CPU architecture
+        run: |
+          cd src-tauri/target/release/bundle/dmg
+          for file in *.dmg; do
+            if [ -f "$file" ]; then
+              newname="${file%.dmg}-aarch64.dmg"
+              mv "$file" "$newname"
+              echo "Renamed: $file -> $newname"
+            fi
+          done
+
+      # 10. 上传 DMG 安装包
       - name: Upload DMG artifact
         uses: actions/upload-artifact@v4
         with:
@@ -76,7 +94,7 @@ jobs:
           path: src-tauri/target/release/bundle/dmg/*.dmg
           retention-days: 30
 
-      # 10. 上传 APP 压缩包
+      # 11. 上传 APP 压缩包
       - name: Upload APP artifact
         uses: actions/upload-artifact@v4
         with:
@@ -84,15 +102,17 @@ jobs:
           path: src-tauri/target/release/bundle/macos/*.app
           retention-days: 30
 
-      # 11. 创建 GitHub Release（仅当推送标签时）
+      # 12. 创建 GitHub Release（推送标签或手动触发时）
       - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || github.event.inputs.release == 'true'
         uses: softprops/action-gh-release@v2
         with:
+          name: Mole Desktop ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Dev Build' }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('dev-{0}', github.sha) }}
           files: |
             src-tauri/target/release/bundle/dmg/*.dmg
           draft: false
-          prerelease: false
+          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
