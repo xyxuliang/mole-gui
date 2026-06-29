@@ -150,6 +150,16 @@
           <!-- 设置分组 -->
           <div class="nav-group">
             <div class="nav-group-title" data-i18n="groupSettings">设置</div>
+            <button class="nav-item" data-feature="logs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              <span data-i18n="logs">日志</span>
+            </button>
             <button class="nav-item" data-feature="settings">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="3"/>
@@ -165,6 +175,9 @@
             <div class="status-dot"></div>
             <span class="status-text" data-i18n="engineReady">引擎就绪</span>
           </div>
+          <button class="devtools-btn" id="btn-devtools" title="打开开发者工具" style="background: var(--accent-color); color: white; border: none; border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 12px; margin: 4px 0;">
+            DevTools
+          </button>
           <button class="theme-toggle" id="theme-toggle" data-i18n-title="toggleTheme" title="切换主题">
             <svg class="theme-icon-light" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
@@ -253,6 +266,14 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 <span data-i18n="scanApps">扫描应用</span>
               </button>
+              <button class="btn btn-secondary" id="btn-select-all-apps" style="display:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+                <span data-i18n="selectAll">全选</span>
+              </button>
+              <button class="btn btn-accent" id="btn-batch-uninstall" style="display:none">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <span data-i18n="batchUninstall">批量卸载</span>
+              </button>
             </div>
           </div>
 
@@ -309,6 +330,14 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                 <span data-i18n="jsonFormat">JSON 格式</span>
               </button>
+              <button class="btn btn-secondary" id="btn-export-csv">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span data-i18n="exportCsv">导出 CSV</span>
+              </button>
+              <button class="btn btn-secondary" id="btn-export-json">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span data-i18n="exportJson">导出 JSON</span>
+              </button>
             </div>
           </div>
 
@@ -340,6 +369,10 @@
               <button class="btn btn-primary" id="btn-installer">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 <span data-i18n="scanInstallers">扫描安装包</span>
+              </button>
+              <button class="btn btn-secondary" id="btn-select-all-installers" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                <span data-i18n="selectAll">全选</span>
               </button>
               <button class="btn btn-accent" id="btn-installer-clean">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
@@ -410,6 +443,30 @@
             </div>
           </div>
 
+          <!-- 日志 -->
+          <div class="action-group" data-feature="logs">
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btn-logs-refresh">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                <span>刷新日志</span>
+              </button>
+              <button class="btn btn-secondary" id="btn-logs-clear">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                <span>清空日志</span>
+              </button>
+            </div>
+            <div class="search-bar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="logs-search" placeholder="搜索日志..." />
+            </div>
+            <div class="log-filters">
+              <button class="log-filter active" data-level="all">全部</button>
+              <button class="log-filter" data-level="INFO">信息</button>
+              <button class="log-filter" data-level="WARN">警告</button>
+              <button class="log-filter" data-level="ERROR">错误</button>
+            </div>
+          </div>
+
           <!-- 设置页面 -->
           <div class="action-group" data-feature="settings">
             <div class="settings-container">
@@ -463,6 +520,74 @@
                   </div>
                 </div>
 
+                <!-- Mole 路径配置 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title" data-i18n="molePath">Mole 路径</div>
+                    <div class="settings-item-desc" data-i18n="molePathDesc">自定义 Mole CLI 可执行文件路径（留空自动检测）</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <input type="text" id="settings-mole-path" class="settings-input" placeholder="/opt/homebrew/bin/mo" />
+                  </div>
+                </div>
+
+                <!-- 操作确认 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title" data-i18n="confirmBeforeAction">操作前确认</div>
+                    <div class="settings-item-desc" data-i18n="confirmBeforeActionDesc">执行清理、卸载等危险操作前显示确认对话框</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <label class="switch">
+                      <input type="checkbox" id="settings-confirm-action" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 自动刷新 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title" data-i18n="autoRefresh">自动刷新</div>
+                    <div class="settings-item-desc" data-i18n="autoRefreshDesc">操作完成后自动刷新结果列表</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <label class="switch">
+                      <input type="checkbox" id="settings-auto-refresh" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 定时清理 -->
+                <div class="settings-item">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title">定时清理</div>
+                    <div class="settings-item-desc">自动定期清理系统垃圾文件</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <label class="switch">
+                      <input type="checkbox" id="settings-scheduled-clean">
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- 清理频率 -->
+                <div class="settings-item" id="scheduled-clean-interval" style="display:none">
+                  <div class="settings-item-info">
+                    <div class="settings-item-title">清理频率</div>
+                    <div class="settings-item-desc">设置自动清理的执行频率</div>
+                  </div>
+                  <div class="settings-item-control">
+                    <select id="settings-clean-interval" class="settings-select">
+                      <option value="daily">每天</option>
+                      <option value="weekly">每周</option>
+                      <option value="monthly">每月</option>
+                    </select>
+                  </div>
+                </div>
+
                 <!-- 版本信息 -->
                 <div class="settings-item">
                   <div class="settings-item-info">
@@ -470,7 +595,13 @@
                     <div class="settings-item-desc">Version <span id="settings-version">1.0.0</span></div>
                   </div>
                   <div class="settings-item-control">
-                    <span class="settings-badge">Tauri</span>
+                    <button class="btn btn-secondary" id="btn-check-update">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="23 4 23 10 17 10"/>
+                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                      </svg>
+                      <span data-i18n="checkUpdate">检查更新</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -725,6 +856,25 @@
               <p class="loading-text" data-i18n="loading">加载中...</p>
             </div>
             <div class="result-list" id="envs-result" style="display:none"></div>
+          </div>
+
+          <!-- 日志结果 -->
+          <div class="result-panel" id="panel-logs">
+            <div class="result-placeholder" id="logs-placeholder">
+              <div class="placeholder-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <p class="placeholder-title">点击「刷新日志」查看系统日志</p>
+              <p class="placeholder-hint">查看应用运行日志，支持按级别筛选和搜索</p>
+            </div>
+            <div class="result-loading" id="logs-loading" style="display:none">
+              <div class="loading-pulse">
+                <div class="pulse-ring"></div>
+                <div class="pulse-core"></div>
+              </div>
+              <p class="loading-text">加载中...</p>
+            </div>
+            <div class="result-list" id="logs-result" style="display:none"></div>
           </div>
 
           <!-- 设置结果（隐藏，设置页面不需要结果区） -->
